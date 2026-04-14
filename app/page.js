@@ -491,12 +491,12 @@ export default function HomePage() {
         className="mt-6 rounded-2xl border border-[rgba(255,255,255,0.58)] bg-[rgba(250,244,234,0.66)] p-4 backdrop-blur-sm md:p-5"
         aria-label="YouTube Channel Strip"
       >
-        <div className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
-          <div className="flex items-start gap-3">
+        <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row md:items-center md:text-right">
+          <div className="flex flex-col items-center gap-2 text-center md:flex-row md:items-start md:gap-3 md:text-right">
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(204,24,30,0.12)] text-xl text-[#cc181e]">
               ▶
             </span>
-            <div>
+            <div className="text-center md:text-right">
               <p className="m-0 text-lg font-extrabold">עוד תכנים עם הדס ביוטיוב</p>
               <p className="mb-0 mt-1 text-sm leading-7 text-[var(--muted)]">
                 סרטונים קצרים על מנהיגות, עומס, בחירה והובלה מודעת
@@ -511,21 +511,21 @@ export default function HomePage() {
             href={youtubeChannel}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 min-w-[150px] items-center justify-center rounded-full border border-[rgba(134,80,47,0.35)] bg-[rgba(224,211,187,0.78)] px-4 text-sm font-bold text-[var(--text)] no-underline transition hover:-translate-y-px hover:bg-[rgba(214,199,169,0.88)]"
+            className="mx-auto inline-flex min-h-11 min-w-[150px] items-center justify-center rounded-full border border-[rgba(134,80,47,0.35)] bg-[rgba(224,211,187,0.78)] px-4 text-sm font-bold text-[var(--text)] no-underline transition hover:-translate-y-px hover:bg-[rgba(214,199,169,0.88)] md:mx-0"
           >
             לערוץ YouTube
           </a>
         </div>
       </section>
 
-      <section className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 md:p-7">
+      <section className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 text-center md:p-7 md:text-right">
         <h2 className="m-0 text-4xl font-black">להאזנה: שיחה על מנהיגות, נוכחות והשפעה</h2>
         <p className="mb-0 mt-3 text-lg leading-8 text-[var(--muted)]">
           פרק מומלץ על עומק אישי, בחירה והובלה אפקטיבית בעולם העבודה והחיים.
         </p>
-        <div className="mt-4 grid gap-4 md:grid-cols-[120px_1fr_auto] md:items-center">
-          <div className="h-[120px] w-[120px] rounded-2xl bg-[linear-gradient(145deg,#b89263,#8d5e3c)] shadow-[0_10px_20px_rgba(61,44,27,0.2)]" />
-          <div>
+        <div className="mt-4 grid justify-items-center gap-4 md:grid-cols-[120px_1fr_auto] md:items-center md:justify-items-stretch">
+          <div className="mx-auto h-[120px] w-[120px] rounded-2xl bg-[linear-gradient(145deg,#b89263,#8d5e3c)] shadow-[0_10px_20px_rgba(61,44,27,0.2)]" />
+          <div className="text-center md:text-right">
             <p className="m-0 text-xl font-black">"תודעה ערה" - פרק השראה</p>
             <p className="mb-0 mt-1 text-[var(--muted)]">שיחה מעשית על הובלה עצמית וניהול אנשים מתוך יציבות ובהירות.</p>
           </div>
@@ -533,7 +533,7 @@ export default function HomePage() {
             href="https://open.spotify.com/episode/5EISkQeSjPqbXuOLvLIojg?si=bClUXCJSRce0lYjuPk31pw"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(90,50,29,0.5)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-4 text-sm font-bold text-white no-underline"
+            className="mx-auto inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(90,50,29,0.5)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-4 text-sm font-bold text-white no-underline md:mx-0"
           >
             להאזנה ב-Spotify
           </a>
