@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const brand = {
   name: "הדס דרור",
@@ -17,6 +17,14 @@ const navItems = [
   { id: "process", label: "תהליך" },
   { id: "faq", label: "שאלות" },
   { id: "contact", label: "יצירת קשר" }
+];
+
+const mobileNavItems = [
+  { id: "about", label: "אודות", icon: "◌" },
+  { id: "programs", label: "תוכניות", icon: "◍" },
+  { id: "work-modes", label: "מסלולים", icon: "◎" },
+  { id: "process", label: "תהליך", icon: "◉" },
+  { id: "contact", label: "קשר", icon: "●" }
 ];
 
 const programs = [
@@ -213,6 +221,24 @@ export default function HomePage() {
 
   const sections = useMemo(() => navItems.map((item) => item.id), []);
 
+  const scrollToSection = useCallback((id) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const headerHeight = headerRef.current?.offsetHeight || 88;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 28;
+    window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+
+    if (window.location.hash !== `#${id}`) {
+      window.history.replaceState(null, "", `#${id}`);
+    }
+  }, []);
+
+  const handleAnchorClick = (id) => (event) => {
+    event.preventDefault();
+    scrollToSection(id);
+  };
+
   useEffect(() => {
     const observers = [];
     sections.forEach((id) => {
@@ -249,6 +275,18 @@ export default function HomePage() {
       window.removeEventListener("resize", updateHeaderOffset);
       window.removeEventListener("orientationchange", updateHeaderOffset);
     };
+  }, [scrollToSection]);
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+      window.setTimeout(() => scrollToSection(hash), 0);
+    };
+
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
   }, []);
 
   useEffect(() => {
@@ -271,14 +309,14 @@ export default function HomePage() {
   }, [contactDialogOpen]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 md:px-6 md:pt-8">
+    <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:px-6 md:pb-24 md:pt-8">
       <header
         ref={headerRef}
         data-site-header
         className="sticky top-3 z-40 rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl"
       >
         <div className="flex items-center justify-between gap-3">
-          <a href="#top" className="flex items-center gap-3 no-underline">
+          <a href="#top" onClick={handleAnchorClick("top")} className="flex items-center gap-3 no-underline">
             <img src={brand.logo} alt="תודעה ערה" className="h-9 w-auto" />
             <div>
               <p className="m-0 text-xl font-black text-[var(--text)]">{brand.name}</p>
@@ -288,16 +326,18 @@ export default function HomePage() {
 
           <a
             href="#contact"
+            onClick={handleAnchorClick("contact")}
             className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(90,50,29,0.5)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-4 text-sm font-bold text-white no-underline shadow-[0_10px_20px_rgba(164,87,47,0.28)]"
           >
             לתיאום שיחת היכרות
           </a>
         </div>
-        <nav className="mt-3 flex items-center gap-2.5 overflow-x-auto pb-1">
+        <nav className="mt-3 hidden items-center gap-2.5 overflow-x-auto pb-1 md:flex">
           {navItems.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
+              onClick={handleAnchorClick(item.id)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-bold no-underline transition ${
                 activeSection === item.id
                   ? "border-[rgba(134,80,47,0.5)] bg-[rgba(216,191,147,0.45)] text-[var(--text)]"
@@ -327,12 +367,14 @@ export default function HomePage() {
           <div className="mt-5 flex flex-wrap gap-3">
             <a
               href="#contact"
+              onClick={handleAnchorClick("contact")}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[rgba(90,50,29,0.55)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-5 text-base font-bold text-white no-underline shadow-[0_10px_22px_rgba(164,87,47,0.28)]"
             >
               לתיאום שיחת היכרות
             </a>
             <a
               href="#programs"
+              onClick={handleAnchorClick("programs")}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[rgba(134,80,47,0.35)] bg-[rgba(224,211,187,0.75)] px-5 text-base font-bold text-[var(--text)] no-underline"
             >
               לצפייה בתוכניות
@@ -443,6 +485,7 @@ export default function HomePage() {
         <div className="mt-5 text-center">
           <a
             href="#contact"
+            onClick={handleAnchorClick("contact")}
             className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(134,80,47,0.4)] bg-[rgba(224,211,187,0.86)] px-5 text-base font-bold text-[var(--text)] no-underline"
           >
             לא בטוחים מה מתאים? דברו איתי
@@ -686,6 +729,32 @@ export default function HomePage() {
           </div>
         </div>
       ) : null}
+
+      <nav
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(134,80,47,0.25)] bg-[rgba(244,233,214,0.96)] px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden"
+        aria-label="ניווט תחתון"
+      >
+        <div className="mx-auto grid max-w-6xl grid-cols-5 gap-1">
+          {mobileNavItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={handleAnchorClick(item.id)}
+                className={`flex min-h-14 flex-col items-center justify-center rounded-2xl px-1 text-center no-underline transition ${
+                  isActive
+                    ? "bg-[rgba(134,80,47,0.14)] text-[var(--text)]"
+                    : "text-[var(--muted)] hover:bg-[rgba(134,80,47,0.08)]"
+                }`}
+              >
+                <span className="text-sm leading-none">{item.icon}</span>
+                <span className="mt-1 text-xs font-bold leading-none">{item.label}</span>
+              </a>
+            );
+          })}
+        </div>
+      </nav>
     </main>
   );
 }

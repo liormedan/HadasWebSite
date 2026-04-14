@@ -25,11 +25,11 @@ body {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-offset, 88px) + 16px);
+  scroll-padding-top: calc(var(--header-offset, 88px) + 28px);
 }
 
 section[id] {
-  scroll-margin-top: calc(var(--header-offset, 88px) + 16px);
+  scroll-margin-top: calc(var(--header-offset, 88px) + 28px);
 }
 
 body {
