@@ -257,7 +257,7 @@ export default function HomePage() {
       <header
         className="rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl"
       >
-        <div className="flex items-center justify-between gap-3">
+        <div className="hidden items-center justify-between gap-3 md:flex">
           <a href="#top" className="flex items-center gap-3 no-underline">
             <img src={brand.logo} alt="תודעה ערה" className="h-9 w-auto" />
             <div>
@@ -273,7 +273,13 @@ export default function HomePage() {
             לתיאום שיחת היכרות
           </a>
         </div>
-        <nav className="mt-3 flex items-center gap-2.5 overflow-x-auto pb-1">
+        <div className="md:hidden">
+          <a href="#top" className="block text-center no-underline">
+            <p className="m-0 text-2xl font-black text-[var(--text)]">{brand.name}</p>
+            <p className="m-0 text-sm font-semibold text-[var(--muted)]">תודעה ערה</p>
+          </a>
+        </div>
+        <nav className="mt-3 hidden items-center gap-2.5 overflow-x-auto pb-1 md:flex">
           {navItems.map((item) => (
             <a
               key={item.id}
