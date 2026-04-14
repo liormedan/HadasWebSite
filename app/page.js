@@ -210,6 +210,7 @@ const youtubeChannel = "https://www.youtube.com/user/hadasbh";
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState("about");
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef(null);
 
   const sections = useMemo(() => navItems.map((item) => item.id), []);
@@ -273,6 +274,16 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 8);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
     const scrollToHash = () => {
       const hash = window.location.hash.replace("#", "");
       if (!hash) return;
@@ -307,7 +318,11 @@ export default function HomePage() {
     <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 md:px-6 md:pt-8">
       <header
         ref={headerRef}
-        className="rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl md:sticky md:top-3 md:z-40"
+        className={`rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl transition-all duration-300 md:sticky md:top-3 md:z-40 ${
+          isScrolled
+            ? "md:bg-[rgba(244,233,214,0.46)] md:backdrop-blur-2xl md:shadow-[0_10px_22px_rgba(61,44,27,0.16)]"
+            : "md:bg-[rgba(244,233,214,0.9)] md:backdrop-blur-xl"
+        }`}
       >
         <div className="md:hidden">
           <a href="#top" onClick={handleAnchorClick("top")} className="block text-center no-underline">
