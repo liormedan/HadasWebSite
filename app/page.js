@@ -320,13 +320,13 @@ export default function HomePage() {
         ref={headerRef}
         className={`rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl transition-all duration-300 md:sticky md:top-3 md:z-40 ${
           isScrolled
-            ? "md:bg-[rgba(244,233,214,0.46)] md:backdrop-blur-2xl md:shadow-[0_10px_22px_rgba(61,44,27,0.16)]"
-            : "md:bg-[rgba(244,233,214,0.9)] md:backdrop-blur-xl"
+            ? "md:border-[rgba(255,255,255,0.42)] md:bg-[rgba(245,236,223,0.14)] md:backdrop-blur-2xl md:backdrop-saturate-140 md:shadow-[0_8px_18px_rgba(61,44,27,0.08)]"
+            : "md:border-[rgba(134,80,47,0.26)] md:bg-[rgba(244,233,214,0.9)] md:backdrop-blur-xl"
         }`}
       >
         <div className="md:hidden">
           <a href="#top" onClick={handleAnchorClick("top")} className="block text-center no-underline">
-            <p className="m-0 text-2xl font-black text-[var(--text)]">{brand.name}</p>
+            <p className="m-0 text-2xl font-black text-[var(--primary-2)]">{brand.name}</p>
             <p className="m-0 text-sm font-semibold text-[var(--muted)]">תודעה ערה</p>
           </a>
         </div>
@@ -347,7 +347,7 @@ export default function HomePage() {
             >
               <img src={brand.logo} alt="תודעה ערה" className="h-9 w-auto" />
               <div className="text-right">
-                <p className="m-0 text-xl font-black text-[var(--text)]">{brand.name}</p>
+                <p className="m-0 text-xl font-black text-[var(--primary-2)]">{brand.name}</p>
                 <p className="m-0 text-xs font-semibold text-[var(--muted)]">{brand.sub}</p>
               </div>
             </a>
@@ -375,7 +375,7 @@ export default function HomePage() {
       <section id="top" className="mt-4 grid gap-4 rounded-3xl border border-[rgba(255,255,255,0.55)] bg-[rgba(244,233,214,0.78)] p-5 shadow-[0_20px_40px_rgba(61,44,27,0.1)] backdrop-blur-lg md:grid-cols-[1.15fr_0.85fr] md:p-7">
         <div>
           <p className="m-0 text-sm font-extrabold tracking-wide text-[var(--primary-2)]">מנהיגות אישית וארגונית</p>
-          <h1 className="mb-2 mt-2 text-5xl font-black leading-[1.04] md:text-7xl">הדס דרור</h1>
+          <h1 className="mb-2 mt-2 text-5xl font-black leading-[1.04] text-[var(--primary-2)] md:text-7xl">הדס דרור</h1>
           <p className="m-0 text-xl font-bold text-[var(--text)] md:text-2xl">
             ליווי מנהלים, צוותים ואנשים בצמתי שינוי ליצירת בהירות, נוכחות והובלה אפקטיבית.
           </p>
@@ -410,7 +410,7 @@ export default function HomePage() {
       </section>
 
       <section id="about" className="mt-8 rounded-3xl border border-[rgba(255,255,255,0.55)] bg-[rgba(244,233,214,0.76)] p-5 md:p-7">
-        <h2 className="m-0 text-3xl font-black md:text-4xl">אודות הדס דרור</h2>
+        <h2 className="m-0 text-3xl font-black text-[var(--primary-2)] md:text-4xl">אודות הדס דרור</h2>
         <p className="mt-4 max-w-5xl text-lg leading-8 text-[var(--muted)]">
           הדס דרור היא מנחה ראשית, יזמית ומנטורית לפיתוח מנהיגות אישית וארגונית.
           מאמנת אישית מוסמכת, מגשרת ומנחה בכירה בתחומי המנהיגות, הגישור והמו״מ.
@@ -422,7 +422,7 @@ export default function HomePage() {
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           <article className="rounded-2xl border border-[rgba(255,255,255,0.5)] bg-[rgba(255,250,241,0.52)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-            <h3 className="m-0 text-xl font-extrabold">תחומי מומחיות</h3>
+            <h3 className="m-0 text-xl font-extrabold text-[var(--primary-2)]">תחומי מומחיות</h3>
             <ul className="mb-0 mt-2 grid gap-1.5 pr-5 text-base leading-7 text-[var(--muted)]">
               <li>מנהיגות אישית וארגונית</li>
               <li>ליווי מנהלים והנהלות</li>
@@ -432,7 +432,7 @@ export default function HomePage() {
           </article>
 
           <article className="rounded-2xl border border-[rgba(255,255,255,0.5)] bg-[rgba(255,250,241,0.52)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-            <h3 className="m-0 text-xl font-extrabold">גישה מקצועית</h3>
+            <h3 className="m-0 text-xl font-extrabold text-[var(--primary-2)]">גישה מקצועית</h3>
             <p className="mb-0 mt-2 text-base leading-7 text-[var(--muted)]">
               שילוב בין עומק אישי לפרקטיקה ניהולית: תהליך שמייצר בהירות, נוכחות, שפה משותפת וכלים ישימים
               להובלה אפקטיבית ביום-יום האישי והארגוני.
@@ -442,7 +442,7 @@ export default function HomePage() {
       </section>
 
       <section id="programs" className="mt-10">
-        <h2 className="m-0 text-center text-4xl font-black">תוכניות מובילות ללקוחות פרטיים וארגונים</h2>
+        <h2 className="m-0 text-center text-4xl font-black text-[var(--primary-2)]">תוכניות מובילות ללקוחות פרטיים וארגונים</h2>
         <div className="mt-5 grid gap-4 lg:grid-cols-3">
           {programs.map((item) => (
             <article
@@ -488,7 +488,7 @@ export default function HomePage() {
       </section>
 
       <section id="work-modes" className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 md:p-7">
-        <h2 className="m-0 text-center text-4xl font-black">איך אפשר לעבוד יחד?</h2>
+        <h2 className="m-0 text-center text-4xl font-black text-[var(--primary-2)]">איך אפשר לעבוד יחד?</h2>
         <div className="mt-5 grid gap-4 md:grid-cols-3">
           {workModes.map((mode) => (
             <article key={mode.title} className="relative rounded-2xl border border-white/50 bg-[rgba(255,249,238,0.58)] p-4 text-center shadow-[0_10px_22px_rgba(61,44,27,0.1)]">
@@ -523,7 +523,7 @@ export default function HomePage() {
       </section>
 
       <section id="process" className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 md:p-7">
-        <h2 className="m-0 text-center text-4xl font-black">תהליך הליווי ב-7 מפגשים</h2>
+        <h2 className="m-0 text-center text-4xl font-black text-[var(--primary-2)]">תהליך הליווי ב-7 מפגשים</h2>
         <p className="mx-auto mt-3 max-w-4xl text-center text-lg leading-8 text-[var(--muted)]">
           מעבר מדורג משליטה אוטומטית להובלה מודעת — דרך מודעות, בירור ויישום.
         </p>
@@ -605,7 +605,7 @@ export default function HomePage() {
       </section>
 
       <section className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 text-center md:p-7 md:text-right">
-        <h2 className="m-0 text-4xl font-black">להאזנה: שיחה על מנהיגות, נוכחות והשפעה</h2>
+        <h2 className="m-0 text-4xl font-black text-[var(--primary-2)]">להאזנה: שיחה על מנהיגות, נוכחות והשפעה</h2>
         <p className="mb-0 mt-3 text-lg leading-8 text-[var(--muted)]">
           פרק מומלץ על עומק אישי, בחירה והובלה אפקטיבית בעולם העבודה והחיים.
         </p>
@@ -627,7 +627,7 @@ export default function HomePage() {
       </section>
 
       <section className="mt-10" id="testimonials">
-        <h2 className="m-0 text-center text-4xl font-black">מה מספרים משתתפים וארגונים</h2>
+        <h2 className="m-0 text-center text-4xl font-black text-[var(--primary-2)]">מה מספרים משתתפים וארגונים</h2>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {testimonials.map((t) => (
             <article key={`${t.name}-${t.role}`} className="rounded-2xl border border-white/50 bg-[rgba(255,249,238,0.6)] p-5 shadow-[0_12px_24px_rgba(61,44,27,0.1)]">
@@ -641,7 +641,7 @@ export default function HomePage() {
       </section>
 
       <section id="faq" className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.56)] bg-[rgba(244,233,214,0.74)] p-5 md:p-7">
-        <h2 className="m-0 text-4xl font-black">שאלות נפוצות</h2>
+        <h2 className="m-0 text-4xl font-black text-[var(--primary-2)]">שאלות נפוצות</h2>
         <div className="mt-4 grid gap-3">
           {faqs.map((item, idx) => (
             <details
@@ -664,7 +664,7 @@ export default function HomePage() {
       </section>
 
       <section id="contact" className="mt-10 rounded-3xl border border-[rgba(255,255,255,0.6)] bg-[rgba(244,233,214,0.78)] p-5 text-center md:p-7">
-        <h2 className="m-0 text-4xl font-black">יצירת קשר</h2>
+        <h2 className="m-0 text-4xl font-black text-[var(--primary-2)]">יצירת קשר</h2>
         <p className="mx-auto mb-0 mt-2 max-w-4xl text-lg text-[var(--muted)]">
           להזמנת הרצאה, סדנה או תהליך ליווי - השאירו פרטים ואחזור אליכם תוך 1–2 ימי עסקים.
         </p>
@@ -690,7 +690,7 @@ export default function HomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between gap-3">
-              <h3 className="m-0 text-2xl font-black">יצירת קשר</h3>
+              <h3 className="m-0 text-2xl font-black text-[var(--primary-2)]">יצירת קשר</h3>
               <button
                 type="button"
                 onClick={() => setContactDialogOpen(false)}
