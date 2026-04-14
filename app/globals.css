@@ -10,7 +10,6 @@
   --primary-2: #3f7a63;
   --line: rgba(27, 34, 30, 0.13);
   --shadow: 0 20px 40px rgba(47, 35, 25, 0.1);
-  --header-offset: 88px;
 }
 
 * {
@@ -25,11 +24,10 @@ body {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-offset, 88px) + 28px);
 }
 
 section[id] {
-  scroll-margin-top: calc(var(--header-offset, 88px) + 28px);
+  scroll-margin-top: 16px;
 }
 
 body {
