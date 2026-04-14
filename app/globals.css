@@ -10,6 +10,7 @@
   --primary-2: #3f7a63;
   --line: rgba(27, 34, 30, 0.13);
   --shadow: 0 20px 40px rgba(47, 35, 25, 0.1);
+  --header-offset: 170px;
 }
 
 * {
@@ -28,6 +29,16 @@ html {
 
 section[id] {
   scroll-margin-top: 16px;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: calc(var(--header-offset, 170px) + 24px);
+  }
+
+  section[id] {
+    scroll-margin-top: calc(var(--header-offset, 170px) + 24px);
+  }
 }
 
 body {

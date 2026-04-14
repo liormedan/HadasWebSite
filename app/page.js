@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const brand = {
   name: "הדס דרור",
@@ -210,8 +210,29 @@ const youtubeChannel = "https://www.youtube.com/user/hadasbh";
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState("about");
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const headerRef = useRef(null);
 
   const sections = useMemo(() => navItems.map((item) => item.id), []);
+
+  const scrollToSection = useCallback((id) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+    const headerHeight = headerRef.current?.offsetHeight || 170;
+    const offset = isDesktop ? headerHeight + 28 : 16;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+
+    if (window.location.hash !== `#${id}`) {
+      window.history.replaceState(null, "", `#${id}`);
+    }
+  }, []);
+
+  const handleAnchorClick = (id) => (event) => {
+    event.preventDefault();
+    scrollToSection(id);
+  };
 
   useEffect(() => {
     const observers = [];
@@ -232,6 +253,36 @@ export default function HomePage() {
 
     return () => observers.forEach((o) => o.disconnect());
   }, [sections]);
+
+  useEffect(() => {
+    const updateHeaderOffset = () => {
+      const desktopHeaderHeight = headerRef.current?.offsetHeight || 170;
+      document.documentElement.style.setProperty("--header-offset", `${desktopHeaderHeight}px`);
+    };
+
+    updateHeaderOffset();
+    window.addEventListener("load", updateHeaderOffset);
+    window.addEventListener("resize", updateHeaderOffset);
+    window.addEventListener("orientationchange", updateHeaderOffset);
+
+    return () => {
+      window.removeEventListener("load", updateHeaderOffset);
+      window.removeEventListener("resize", updateHeaderOffset);
+      window.removeEventListener("orientationchange", updateHeaderOffset);
+    };
+  }, []);
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+      window.setTimeout(() => scrollToSection(hash), 0);
+    };
+
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, [scrollToSection]);
 
   useEffect(() => {
     if (!contactDialogOpen) return undefined;
@@ -255,45 +306,55 @@ export default function HomePage() {
   return (
     <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 md:px-6 md:pt-8">
       <header
-        className="rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl"
+        ref={headerRef}
+        className="rounded-3xl border border-[rgba(134,80,47,0.26)] bg-[rgba(244,233,214,0.9)] p-3 backdrop-blur-xl md:sticky md:top-3 md:z-40"
       >
-        <div className="hidden items-center justify-between gap-3 md:flex">
-          <a href="#top" className="flex items-center gap-3 no-underline">
-            <img src={brand.logo} alt="תודעה ערה" className="h-9 w-auto" />
-            <div>
-              <p className="m-0 text-xl font-black text-[var(--text)]">{brand.name}</p>
-              <p className="m-0 text-xs font-semibold text-[var(--muted)]">{brand.sub}</p>
-            </div>
-          </a>
-
-          <a
-            href="#contact"
-            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(90,50,29,0.5)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-4 text-sm font-bold text-white no-underline shadow-[0_10px_20px_rgba(164,87,47,0.28)]"
-          >
-            לתיאום שיחת היכרות
-          </a>
-        </div>
         <div className="md:hidden">
-          <a href="#top" className="block text-center no-underline">
+          <a href="#top" onClick={handleAnchorClick("top")} className="block text-center no-underline">
             <p className="m-0 text-2xl font-black text-[var(--text)]">{brand.name}</p>
             <p className="m-0 text-sm font-semibold text-[var(--muted)]">תודעה ערה</p>
           </a>
         </div>
-        <nav className="mt-3 hidden items-center gap-2.5 overflow-x-auto pb-1 md:flex">
-          {navItems.map((item) => (
+
+        <div className="hidden md:block">
+          <div className="flex w-full items-center justify-between [direction:ltr]">
             <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-bold no-underline transition ${
-                activeSection === item.id
-                  ? "border-[rgba(134,80,47,0.5)] bg-[rgba(216,191,147,0.45)] text-[var(--text)]"
-                  : "border-[rgba(134,80,47,0.22)] bg-transparent text-[var(--text)] hover:bg-[rgba(216,191,147,0.2)]"
-              }`}
+              href="#contact"
+              onClick={handleAnchorClick("contact")}
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(90,50,29,0.5)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-4 text-sm font-bold text-white no-underline shadow-[0_10px_20px_rgba(164,87,47,0.28)]"
             >
-              {item.label}
+              לתיאום שיחת היכרות
             </a>
-          ))}
-        </nav>
+            <a
+              href="#top"
+              onClick={handleAnchorClick("top")}
+              className="flex items-center gap-3 text-right no-underline [direction:rtl]"
+            >
+              <img src={brand.logo} alt="תודעה ערה" className="h-9 w-auto" />
+              <div className="text-right">
+                <p className="m-0 text-xl font-black text-[var(--text)]">{brand.name}</p>
+                <p className="m-0 text-xs font-semibold text-[var(--muted)]">{brand.sub}</p>
+              </div>
+            </a>
+          </div>
+
+          <nav dir="rtl" className="mt-3 flex w-full items-center justify-start gap-2.5 overflow-x-auto pb-1">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={handleAnchorClick(item.id)}
+                className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-bold no-underline transition ${
+                  activeSection === item.id
+                    ? "border-[rgba(134,80,47,0.5)] bg-[rgba(216,191,147,0.45)] text-[var(--text)]"
+                    : "border-[rgba(134,80,47,0.22)] bg-transparent text-[var(--text)] hover:bg-[rgba(216,191,147,0.2)]"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </header>
 
       <section id="top" className="mt-4 grid gap-4 rounded-3xl border border-[rgba(255,255,255,0.55)] bg-[rgba(244,233,214,0.78)] p-5 shadow-[0_20px_40px_rgba(61,44,27,0.1)] backdrop-blur-lg md:grid-cols-[1.15fr_0.85fr] md:p-7">
@@ -313,12 +374,14 @@ export default function HomePage() {
           <div className="mt-5 flex flex-wrap gap-3">
             <a
               href="#contact"
+              onClick={handleAnchorClick("contact")}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[rgba(90,50,29,0.55)] bg-[linear-gradient(110deg,#7b4427,#a76139)] px-5 text-base font-bold text-white no-underline shadow-[0_10px_22px_rgba(164,87,47,0.28)]"
             >
               לתיאום שיחת היכרות
             </a>
             <a
               href="#programs"
+              onClick={handleAnchorClick("programs")}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[rgba(134,80,47,0.35)] bg-[rgba(224,211,187,0.75)] px-5 text-base font-bold text-[var(--text)] no-underline"
             >
               לצפייה בתוכניות
@@ -332,27 +395,34 @@ export default function HomePage() {
       </section>
 
       <section id="about" className="mt-8 rounded-3xl border border-[rgba(255,255,255,0.55)] bg-[rgba(244,233,214,0.76)] p-5 md:p-7">
-        <h2 className="m-0 text-3xl font-black md:text-4xl">עם יד על הלב, מי באמת מנהל את החיים שלך?</h2>
-        <p className="mt-4 max-w-4xl text-lg leading-8 text-[var(--muted)]">
-          כשאנחנו פועלים על אוטומט, אנחנו מגיבים במקום להוביל. בתהליך עם הדס עוברים מהישרדות
-          לניהול מודע: מבהירים מה חשוב באמת, מזהים דפוסים שמנהלים אותנו, ובונים דרך פעולה יציבה.
+        <h2 className="m-0 text-3xl font-black md:text-4xl">אודות הדס דרור</h2>
+        <p className="mt-4 max-w-5xl text-lg leading-8 text-[var(--muted)]">
+          הדס דרור היא מנחה ראשית, יזמית ומנטורית לפיתוח מנהיגות אישית וארגונית.
+          מאמנת אישית מוסמכת, מגשרת ומנחה בכירה בתחומי המנהיגות, הגישור והמו״מ.
+        </p>
+        <p className="mb-0 mt-2 max-w-5xl text-lg leading-8 text-[var(--muted)]">
+          הדס מפתחת ומובילה את תוכנית "מנהיגות ערה" לפיתוח עובדים ומנהלים בשיתוף קבוצת גומא גבים,
+          ומייסדת שותפה ב-Game Changer - תוכנית פורצת דרך לפיתוח מנהלים וצוותים בהשראת עולם הכדורגל.
         </p>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            { t: "הכאב", d: "עומס, תגובתיות וחוסר בהירות" },
-            { t: "הבירור", d: "זיהוי דפוסים והגדרת ערכים" },
-            { t: "התרגול", d: "כלים ישימים לניהול עצמי וצוותי" },
-            { t: "התוצאה", d: "נוכחות, יציבות והובלה אפקטיבית" }
-          ].map((item) => (
-            <article
-              key={item.t}
-              className="rounded-2xl border border-[rgba(255,255,255,0.5)] bg-[rgba(255,250,241,0.52)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
-            >
-              <h3 className="m-0 text-xl font-extrabold">{item.t}</h3>
-              <p className="mb-0 mt-2 text-base leading-7 text-[var(--muted)]">{item.d}</p>
-            </article>
-          ))}
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          <article className="rounded-2xl border border-[rgba(255,255,255,0.5)] bg-[rgba(255,250,241,0.52)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+            <h3 className="m-0 text-xl font-extrabold">תחומי מומחיות</h3>
+            <ul className="mb-0 mt-2 grid gap-1.5 pr-5 text-base leading-7 text-[var(--muted)]">
+              <li>מנהיגות אישית וארגונית</li>
+              <li>ליווי מנהלים והנהלות</li>
+              <li>גישור וניהול משא ומתן</li>
+              <li>פיתוח צוותים בתנאי שינוי ועומס</li>
+            </ul>
+          </article>
+
+          <article className="rounded-2xl border border-[rgba(255,255,255,0.5)] bg-[rgba(255,250,241,0.52)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+            <h3 className="m-0 text-xl font-extrabold">גישה מקצועית</h3>
+            <p className="mb-0 mt-2 text-base leading-7 text-[var(--muted)]">
+              שילוב בין עומק אישי לפרקטיקה ניהולית: תהליך שמייצר בהירות, נוכחות, שפה משותפת וכלים ישימים
+              להובלה אפקטיבית ביום-יום האישי והארגוני.
+            </p>
+          </article>
         </div>
       </section>
 
@@ -429,6 +499,7 @@ export default function HomePage() {
         <div className="mt-5 text-center">
           <a
             href="#contact"
+            onClick={handleAnchorClick("contact")}
             className="inline-flex min-h-11 items-center justify-center rounded-full border border-[rgba(134,80,47,0.4)] bg-[rgba(224,211,187,0.86)] px-5 text-base font-bold text-[var(--text)] no-underline"
           >
             לא בטוחים מה מתאים? דברו איתי
